@@ -3,25 +3,31 @@ import React, { Component } from 'react';
 class TestDb extends Component{
     constructor() {
         super();
-        this.state = 
-        {
-          allwatches : []
+        this.state = {
+          data: [],
+          dataLoaded: false
         };
     }
     
     componentDidMount() {
-        fetch('/getWatchesList')
+        fetch('/getChiffrePerMonth')
             .then(res => res.json())
-            .then(allwatches_ => this.setState({allwatches: allwatches_}, () => console.log("successfully fetched allwatches", allwatches_)))
+            .then(json =>{
+                this.setState({
+                    data: json,
+                    dataLoaded: true
+                })
+            }
+        )
     }
 
     render() {
         return (
             <div>
             { 
-                this.state.allwatches.map(
+                this.state.data.map(
                     (product) => {
-                    return <p>{product.Nomcat}</p>
+                    return <p>Mois : {product.mois} Prix : {product.totalPrix}</p>
                 })
             } 
             </div>
