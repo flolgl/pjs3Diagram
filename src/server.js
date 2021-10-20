@@ -29,10 +29,24 @@ app.get('/', (req, res) => {
 app.get('/getWatchesList', (req, res) => {
   // SELECT DISTINCT MONTH(DateTicket) FROM `ticket`
   connection.query('SELECT * FROM categorie', function(err, rows, fields) {
-    if (!err) 
+    if (!err){
       res.json(rows);
+      console.log(res.json)
+    }
     else
       console.log('Query erreur.');
     
   });
 });
+
+
+app.get('/getChiffrePerMonth', (req, res) => {
+  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte) as totalPrix, MONTH(ticket.DateTicket) as mois FROM detailticket, ticket WHERE ticket.NoTicket = detailticket.NoTicket GROUP BY(MONTH(ticket.DateTicket))',
+  function(err, rows, fields) {
+    if (!err) 
+      res.json(rows);    
+    else
+      console.log('Query erreur.');
+  })
+
+})
