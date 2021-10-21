@@ -41,7 +41,7 @@ app.get('/getWatchesList', (req, res) => {
 
 
 app.get('/getChiffrePerMonth', (req, res) => {
-  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte) as totalPrix, MONTH(ticket.DateTicket) as mois FROM detailticket, ticket WHERE ticket.NoTicket = detailticket.NoTicket GROUP BY(MONTH(ticket.DateTicket))',
+  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte) as totalPrix, MONTH(ticket.DateTicket) as mois, YEAR(ticket.DateTicket) as year FROM detailticket, ticket WHERE ticket.NoTicket = detailticket.NoTicket GROUP BY(MONTH(ticket.DateTicket))',
   function(err, rows, fields) {
     if (!err) 
       res.json(rows);    
