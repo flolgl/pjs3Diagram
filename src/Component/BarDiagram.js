@@ -3,10 +3,10 @@ import React from 'react';
 import * as d3 from 'd3';
 
 
-function BarDiagram({ data }) {
-
+function BarDiagram({ data, echelle}) {
+  console.log(echelle)
   const ref = useD3(
-
+    
     (svg) => {
 
       const height = 500;
@@ -28,7 +28,7 @@ function BarDiagram({ data }) {
 
         .scaleLinear()
 
-        .domain([0, d3.max(data, (d) => d.totalPrix) + 10000])
+        .domain([0, d3.max(data, (d) => d.chiffre) + 0.10*d3.max(data, (d) => d.chiffre)])
 
         .rangeRound([height - margin.bottom, margin.top]);
 
@@ -102,8 +102,8 @@ function BarDiagram({ data }) {
         .attr("class", "bar")
         .attr("x", (d) => x(d.mois))
         .attr("width", x.bandwidth())
-        .attr("y", (d) => y1(d.totalPrix))
-        .attr("height", (d) => y1(0) - y1(d.totalPrix));
+        .attr("y", (d) => y1(d.chiffre))
+        .attr("height", (d) => y1(0) - y1(d.chiffre));
 
     },
 

@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import CompoDb from "./Component/TestDb.js"
+import ChiffreCateg from "./Component/ChiffreCateg.js"
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
+
 
 class App extends Component {
 state = {
@@ -26,14 +29,22 @@ state = {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">{this.state.data}</p>
-        <CompoDb></CompoDb>
-      </div>
+      <Router>
+        <Switch>
+          <Route path="/CompoDb" component={CompoDb}/>
+          <Route path="/getChiffreCateg" component={ChiffreCateg}/>
+
+          <Route path="/">
+            <div className="App">
+              <header className="App-header">
+                <img src={logo} className="App-logo" alt="logo" />
+                <h1 className="App-title">Welcome to React</h1>
+              </header>
+              <p className="App-intro">{this.state.data}</p>
+            </div>
+          </Route>
+        </Switch>
+      </Router>
     );
   }
 }
