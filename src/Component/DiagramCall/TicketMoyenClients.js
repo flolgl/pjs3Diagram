@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import BarDiagram from './BarDiagram';
+import BarDiagram from '../Diagram/BarDiagram.js';
+import ChartHighstock from "../Diagram/LineDiagram.js"
 
-class TestDb extends Component{
-    monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
+class TicketMoyenClients extends Component{
     constructor() {
         super();
         this.state = {
@@ -10,20 +10,18 @@ class TestDb extends Component{
           dataLoaded: false
         };
     }
+    
 
     updateWithMonth(tab){
         
         //console.log(tab)
-        tab.forEach(element => {
-            element.year = this.monthNames[element.mois] + " " + element.year;
-        });
+
         return tab;
     }
      
     componentDidMount() {
-        fetch('/getChiffrePerMonth')
+        fetch('/getTicketMoyenClients')
             .then(res => res.json())
-            .then(json => this.updateWithMonth(json))
 
             .then(json =>{
                 this.setState({
@@ -38,11 +36,12 @@ class TestDb extends Component{
     
     render() {
         return (
+            
             <div>
-                <BarDiagram data={this.state.data} echelle={10000}/>
+                <BarDiagram data={this.state.data} title="Prix ticket moyen par client" xAxisNameFormat= {true} sortData={true}/>;
             </div>
         ); 
     }
 }
 
-export default TestDb;
+export default TicketMoyenClients;

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import CompoDb from "./Component/TestDb.js"
-import ChiffreCateg from "./Component/ChiffreCateg.js"
+import ChiffreMois from "./Component/DiagramCall/ChiffreMois.js"
+import ChiffreCateg from "./Component/DiagramCall/ChiffreCateg.js"
+import TicketMoyenMois from "./Component/DiagramCall/TicketMoyenMois"
+import TicketMoyenClients from "./Component/DiagramCall/TicketMoyenClients"
+import ClientsNDepByCat from "./Component/DiagramCall/clientsNDepByCat"
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 
 
@@ -31,8 +34,11 @@ state = {
     return (
       <Router>
         <Switch>
-          <Route path="/CompoDb" component={CompoDb}/>
+          <Route path="/ChiffreMois" component={ChiffreMois}/>
           <Route path="/getChiffreCateg" component={ChiffreCateg}/>
+          <Route path="/getTicketMoyenPerMonth" component={TicketMoyenMois}/>
+          <Route path="/getTicketMoyenClients" component={TicketMoyenClients}/>
+          <Route path="/getClientsAndDepensesByCateg" component={ClientsNDepByCat}/>
 
           <Route path="/">
             <div className="App">

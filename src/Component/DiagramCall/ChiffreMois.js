@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import BarDiagram from './BarDiagram.js';
-import qs from 'query-string';
+import BarDiagram from '../Diagram/BarDiagram.js';
+import ChartHighstock from "../Diagram/LineDiagram.js"
 
 
-class ChiffreCateg extends Component{
+class ChiffreMois extends Component{
     monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"];
     constructor() {
         super();
@@ -21,16 +21,9 @@ class ChiffreCateg extends Component{
         });
         return tab;
     }
-
-    getCateg(){
-        //console.log(value.categ);
-        const categ = qs.parse(this.props.location.search).categ;
-        //console.log(categ)
-        return categ == null || categ === "" ? "bio" : categ;
-    }
-
+     
     componentDidMount() {
-        fetch('/getChiffreCateg?categ='+this.getCateg())
+        fetch('/getChiffrePerMonth')
             .then(res => res.json())
             .then(json => this.updateWithMonth(json))
 
@@ -39,27 +32,20 @@ class ChiffreCateg extends Component{
                     data: json,
                     dataLoaded: true
                 })
-            })
-        ;
+            }
+        );
     }
-
 
 
     
     render() {
-        if(!this.state.dataLoaded)
-            return(
-                <div className="">Loading...</div>
-            )
-
-        //console.log(this.getCateg())
         return (
             <div>
-                <h3>{this.getCateg()}</h3>
-                <BarDiagram data={this.state.data} echelle={100}/>
+                <ChartHighstock data={this.state.data} title="Chiffre d'affaire mensuel" />;
+                <BarDiagram data={this.state.data} title="Chiffre d'affaire mensuel"/>
             </div>
         ); 
     }
 }
 
-export default ChiffreCateg;
+export default ChiffreMois;

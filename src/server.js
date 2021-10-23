@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "root",
+  password: "",
   database: "pjs3",
 });
 connection.connect();
@@ -41,13 +41,58 @@ app.get('/getWatchesList', (req, res) => {
 
 
 
+function isSqlSafe(query){
+  isSafe = true;
+  sqlCheckList = ["--",";--",";","/*","*/", "@@", "@", "char","nchar","varchar","nvarchar","alter","begin","cast","create","cursor","declare","delete","drop","end","exec","execute","fetch","insert","kill","select","sys","sysobjects","syscolumns","table","update"];
+  sqlCheckList.forEach(element => {
+    if (query.includes(element))
+      isSafe = false;
+  });
+
+  return isSafe;
+
+}
+
 // prendre en compte la remise
+/* 
+SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre,
+MAX(UNIX_TIMESTAMP(ticket.DateTicket))*1000 as time 
+FROM detailticket, ticket 
+WHERE ticket.NoTicket = detailticket.NoTicket 
+GROUP BY MONTH(ticket.DateTicket), YEAR(ticket.DateTicket) 
+*/
+
 app.get('/getChiffrePerMonth', (req, res) => {
-  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre, MONTH(ticket.DateTicket) as mois, YEAR(ticket.DateTicket) as year FROM detailticket, ticket WHERE ticket.NoTicket = detailticket.NoTicket GROUP BY(MONTH(ticket.DateTicket))',
+  connection.query('SELECT MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y, SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre FROM detailticket, ticket WHERE ticket.NoTicket = detailticket.NoTicket GROUP BY(MONTH(ticket.DateTicket))',
   function(err, rows, fields) {
-    console.log(rows)
-    if (!err) 
-      res.json(rows);    
+    if (!err) {
+      res.json(rows);
+      console.log("[GET] -> getChiffrePerMonth")
+      console.log(rows)    
+    }
+    else
+      console.log('Query erreur.');
+  })
+
+})
+
+//SELECT prixunit*qte, t.dateTicket FROM detailticket d, ticket t where t.NoTicket = d.NoTicket GROUP BY t.DateTicket
+/*
+SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(ticket.NoTicket) as chiffre,
+MONTH(ticket.DateTicket) as time,
+YEAR(ticket.DateTicket) as y
+FROM detailticket, ticket 
+WHERE ticket.NoTicket = detailticket.NoTicket 
+GROUP BY(MONTH(ticket.DateTicket))
+*/
+app.get('/getTicketMoyenPerMonth', (req, res) => {
+  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(ticket.NoTicket) as chiffre, MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y FROM detailticket, ticket  WHERE ticket.NoTicket = detailticket.NoTicket  GROUP BY(MONTH(ticket.DateTicket))',
+  function(err, rows, fields) {
+    if (!err) {
+      res.json(rows);
+      console.log("[GET] -> getTicketMoyenPerMonth")
+      console.log(rows)
+    }    
     else
       console.log('Query erreur.');
   })
@@ -68,7 +113,7 @@ AND LOWER(produit.NomProd) LIKE "%bio%"
 /*
 SELECT "Bio" as categ, 
 SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre, 
-MONTH(ticket.DateTicket) as mois, YEAR(ticket.DateTicket) as year 
+MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y 
 FROM detailticket, ticket, produit 
 WHERE ticket.NoTicket = detailticket.NoTicket 
 AND detailticket.RefProd = produit.RefProd 
@@ -77,15 +122,76 @@ GROUP BY(MONTH(ticket.DateTicket))
 */
 app.get('/getChiffreCateg', (req, res) => {
   //const categorie = req.params.categorie
-  const categorie = req.query.categ;
+  const categorie = req.query.categ != null ? req.query.categ : "bio";
+  if (!isSqlSafe(categorie))
+    return;
   console.log(categorie)
   console.log(req.query.categ)
 
-  connection.query('SELECT "'+categorie+'" as categ, SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre,  MONTH(ticket.DateTicket) as mois, YEAR(ticket.DateTicket) as year  FROM detailticket, ticket, produit  WHERE ticket.NoTicket = detailticket.NoTicket  AND detailticket.RefProd = produit.RefProd  AND LOWER(produit.NomProd) LIKE "%'+categorie+'%"  GROUP BY(MONTH(ticket.DateTicket))',
+  connection.query('SELECT "'+categorie+'" as categ, SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre,  MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y  FROM detailticket, ticket, produit  WHERE ticket.NoTicket = detailticket.NoTicket  AND detailticket.RefProd = produit.RefProd  AND LOWER(produit.NomProd) LIKE "%'+categorie+'%"  GROUP BY(MONTH(ticket.DateTicket))',
     function(err, rows, fields) {
     if (!err) {
       res.json(rows)
-      console.log("Requête GET chiffre categ")
+      console.log("[GET] -> getChiffreCateg | categorie = " + categorie)
+      console.log(rows)
+    }    
+    else
+      console.log(err);
+  })
+
+})
+
+
+/*
+SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(ticket.NoTicket) as chiffre,
+client.codecli, client.nom, client.prenom
+FROM detailticket, ticket, client
+WHERE ticket.NoTicket = detailticket.NoTicket 
+AND client.codecli = ticket.codecli
+GROUP BY(ticket.codecli)
+*/
+app.get('/getTicketMoyenClients', (req, res) => {
+
+  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(ticket.NoTicket) as chiffre, client.codecli, client.nom, client.prenom FROM detailticket, ticket, client WHERE ticket.NoTicket = detailticket.NoTicket  AND client.codecli = ticket.codecli GROUP BY(ticket.codecli)',
+    function(err, rows, fields) {
+    if (!err) {
+      res.json(rows)
+      console.log("[GET] -> getChiffreCateg")
+      console.log(rows)
+    }    
+    else
+      console.log(err);
+  })
+
+})
+
+
+/*
+SELECT "bio" as categ, 
+client.codecli, client.nom,
+SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as depenceClient
+FROM detailticket, ticket, produit, client
+WHERE  
+client.codecli = ticket.codecli
+AND ticket.NoTicket = detailticket.NoTicket  
+AND detailticket.RefProd = produit.RefProd  
+AND LOWER(produit.NomProd) LIKE "%bio%"
+GROUP BY(client.codecli)
+*/
+
+app.get('/getClientsAndDepensesByCateg', (req, res) => {
+  //const categorie = req.params.categorie
+  const categorie = req.query.categ != null ? req.query.categ : "bio";
+  if (!isSqlSafe(categorie))
+    return;
+  //console.log(categorie)
+  //console.log(req.query.categ)
+
+  connection.query('SELECT "'+categorie+'" as categ,  client.codecli, client.nom, client.prenom, SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre FROM detailticket, ticket, produit, client WHERE   client.codecli = ticket.codecli AND ticket.NoTicket = detailticket.NoTicket   AND detailticket.RefProd = produit.RefProd   AND LOWER(produit.NomProd) LIKE "%'+categorie+'%" GROUP BY(client.codecli)',
+    function(err, rows, fields) {
+    if (!err) {
+      res.json(rows)
+      console.log("[GET] -> getClientsAndDepensesByCateg | categorie = " + categorie)
       console.log(rows)
     }    
     else
