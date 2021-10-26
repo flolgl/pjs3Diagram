@@ -1,0 +1,55 @@
+.navBarLinksContainer{
+    justify-content: flex-end;
+}
+
+.navbar-toggler{
+    border:none !important;
+    box-shadow: 0;
+}
+
+.navbar{
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+    position: sticky !important;
+    top: 0px;
+    z-index: 3;
+}
+
+.navbar-toggler:focus{
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+
+/* retirer decoration ancre dans navbar */
+.nav-link{
+    font-size: 17px;
+    color:#333232;
+    text-decoration: none;
+    transition: all 0.4s ease 0s;
+    text-align: center;
+    position: relative;
+}
+
+/* Couleur ancres dans navbar quand hover */
+.nav-link:hover{
+    color: #272727 !important;
+
+}
+
+.nav-link:after {    
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 1px;
+    left: 50%;
+    position: absolute;
+    background: #272727;
+    transition: width 0.35s ease-in-out 0s, left 0.35s ease-in-out 0s;
+    width: 0;
+}
+.nav-link:hover:after { 
+    width: 100%; 
+    left: 0; 
+
+}
