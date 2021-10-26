@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Diagram from '../Diagram/LineDiagram.js';
+import Diagram from '../Diagram/StackedBarDiagram.js';
 import qs from 'query-string';
 
 
@@ -21,6 +21,34 @@ class ChiffreCateg extends Component{
         return tab;
     }
 
+    groupClient(tab){
+
+        //console.log(tab);
+        var newTab = [];
+
+        tab.forEach(element => {
+            if (!newTab.includes(element.codecli))
+                newTab[element.codecli] = [element.nom, element.prenom]
+        })
+
+        Object.entries(newTab).forEach(([key, value]) =>{
+            value.push(this.getClientStuff(tab, key));
+            console.log("push")
+        })
+        //console.log(newTab)
+
+        return newTab;
+    }
+
+    getClientStuff(tab, clientId){
+        var client = [];
+        tab.forEach(element =>{
+            if (element.codecli === clientId)
+                client.push({"chiffre" : element.chiffre, "month" : element.m, "year" : element.y});
+        })
+        return client;
+    }
+
     getCateg(){
         //console.log(value.categ);
         const categ = qs.parse(this.props.location.search).categ;
@@ -31,7 +59,7 @@ class ChiffreCateg extends Component{
     componentDidMount() {
         fetch('/getClientsAndDepensesByCateg?categ='+this.getCateg())
             .then(res => res.json())
-            //.then(json => this.updateWithMonth(json))
+            .then(json => this.groupClient(json))
 
             .then(json =>{
                 this.setState({
@@ -50,7 +78,7 @@ class ChiffreCateg extends Component{
             return(
                 <div className="">Loading...</div>
             )
-
+        console.log(this.state.data)
         //console.log(this.getCateg())
         return (
             <div>
@@ -61,3 +89,4 @@ class ChiffreCateg extends Component{
 }
 
 export default ChiffreCateg;
+

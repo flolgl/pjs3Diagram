@@ -6,6 +6,7 @@ import ChiffreCateg from "./Component/DiagramCall/ChiffreCateg.js"
 import TicketMoyenMois from "./Component/DiagramCall/TicketMoyenMois"
 import TicketMoyenClients from "./Component/DiagramCall/TicketMoyenClients"
 import ClientsNDepByCat from "./Component/DiagramCall/clientsNDepByCat"
+import NavBar from './Component/NavBar';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 
 
@@ -33,6 +34,7 @@ state = {
   render() {
     return (
       <Router>
+        <NavBar/>
         <Switch>
           <Route path="/ChiffreMois" component={ChiffreMois}/>
           <Route path="/getChiffreCateg" component={ChiffreCateg}/>
