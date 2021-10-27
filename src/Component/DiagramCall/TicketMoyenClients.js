@@ -38,7 +38,7 @@ class TicketMoyenClients extends Component{
         return (
             
             <div>
-                <BarDiagram data={this.state.data} title="Prix ticket moyen par client" xAxisNameFormat= {true} sortData={true}/>;
+                <BarDiagram data={this.state.data} title="Prix ticket moyen par client" xAxisNameFormat= {true} sortData={true}/>
             </div>
         ); 
     }

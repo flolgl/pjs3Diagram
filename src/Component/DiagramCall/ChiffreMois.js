@@ -41,7 +41,7 @@ class ChiffreMois extends Component{
     render() {
         return (
             <div>
-                <ChartHighstock data={this.state.data} title="Chiffre d'affaire mensuel" />;
+                <ChartHighstock data={this.state.data} title="Chiffre d'affaire mensuel" />
                 <BarDiagram data={this.state.data} title="Chiffre d'affaire mensuel"/>
             </div>
         ); 

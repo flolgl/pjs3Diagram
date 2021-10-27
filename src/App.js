@@ -7,7 +7,8 @@ import TicketMoyenMois from "./Component/DiagramCall/TicketMoyenMois"
 import TicketMoyenClients from "./Component/DiagramCall/TicketMoyenClients"
 import ClientsNDepByCat from "./Component/DiagramCall/clientsNDepByCat"
 import NavBar from './Component/NavBar';
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
+import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom"
+import Accueil from './Page/Accueil';
 
 
 class App extends Component {
@@ -36,21 +37,14 @@ state = {
       <Router>
         <NavBar/>
         <Switch>
+          <Route exact path="/">
+            <Redirect to="/ChiffreMois" />
+          </Route>          
           <Route path="/ChiffreMois" component={ChiffreMois}/>
           <Route path="/getChiffreCateg" component={ChiffreCateg}/>
           <Route path="/getTicketMoyenPerMonth" component={TicketMoyenMois}/>
           <Route path="/getTicketMoyenClients" component={TicketMoyenClients}/>
           <Route path="/getClientsAndDepensesByCateg" component={ClientsNDepByCat}/>
-
-          <Route path="/">
-            <div className="App">
-              <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <h1 className="App-title">Welcome to React</h1>
-              </header>
-              <p className="App-intro">{this.state.data}</p>
-            </div>
-          </Route>
         </Switch>
       </Router>
     );
