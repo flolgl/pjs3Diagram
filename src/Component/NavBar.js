@@ -13,7 +13,6 @@ export default function NavBar(){
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav" className="navBarLinksContainer justify-content-center">
                 <Nav className="">
-                    <Nav.Link href="/">Accueil</Nav.Link>
                     <Nav.Link href="/ChiffreMois">Chiffre d'affaire mensuel</Nav.Link>
                     <NavDropdown title="Chiffre d'affaire mensuel par catégorie" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/getChiffreCateg?categ=Vegan">Vegan</NavDropdown.Item>
