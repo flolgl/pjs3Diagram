@@ -42,7 +42,7 @@ class ChiffreMois extends Component{
         return (
             <div>
                 <ChartHighstock data={this.state.data} title="Chiffre d'affaire mensuel" />
-                <BarDiagram data={this.state.data} title="Chiffre d'affaire mensuel"/>
+                {/* <BarDiagram data={this.state.data} title="Chiffre d'affaire mensuel"/> */}
             </div>
         ); 
     }

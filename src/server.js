@@ -78,7 +78,7 @@ WHERE ticket.NoTicket = detailticket.NoTicket
 GROUP BY(MONTH(ticket.DateTicket))
 */
 app.get('/getTicketMoyenPerMonth', (req, res) => {
-  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(ticket.NoTicket) as chiffre, MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y FROM detailticket, ticket  WHERE ticket.NoTicket = detailticket.NoTicket  GROUP BY(MONTH(ticket.DateTicket))',
+  connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(ticket.NoTicket) as chiffre, COUNT(*), MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y FROM ticket, detailticket WHERE ticket.NoTicket = detailticket.NoTicket  GROUP BY(MONTH(ticket.DateTicket))',
   function(err, rows, fields) {
     if (!err) {
       res.json(rows);
