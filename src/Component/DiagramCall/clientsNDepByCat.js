@@ -33,7 +33,7 @@ class ChiffreCateg extends Component{
 
         Object.entries(newTab).forEach(([key, value]) =>{
             value.push(this.getClientStuff(tab, key));
-            console.log("push")
+            //console.log("push")
         })
         //console.log(newTab)
 
@@ -74,15 +74,16 @@ class ChiffreCateg extends Component{
 
     
     render() {
+        const cat = this.getCateg();
         if(!this.state.dataLoaded)
             return(
                 <div className="">Loading...</div>
             )
-        console.log(this.state.data)
+        // console.log(this.state.data)
         //console.log(this.getCateg())
         return (
             <div>
-                <Diagram data={this.state.data} xAxisNameFormat={true} sortData={true} title={"Clients ayant achétés dans la catégorie "+ this.getCateg()+", et leurs dépenses"}/>
+                <Diagram categ = {cat} data={this.state.data} xAxisNameFormat={true} sortData={true} title={"Clients ayant achétés dans la catégorie "+ cat +", et leurs dépenses mensuelles associées à la catégorie " + cat}/>
             </div>
         ); 
     }

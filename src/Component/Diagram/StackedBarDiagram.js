@@ -37,6 +37,7 @@ class BarDiagramBis extends Component {
         var color = [
             "#fcba03", "#03f0fc", "#f803fc"
         ]
+        let categ = this.props.categ
 
         Object.entries(this.props.data).forEach(([key, value]) =>{
             var e = [{}]
@@ -65,16 +66,17 @@ class BarDiagramBis extends Component {
 
 
 
-        console.log("names:")
-        console.log(formatName)
+        // console.log("names:")
+        // console.log(formatName)
 
-        console.log("data : ")
-        console.log(Object.keys(this.props.data))
+        // console.log("data : ")
+        // console.log(Object.keys(this.props.data))
 
         Highcharts.chart('container', {
 
             chart: {
-                type: 'columnrange'
+                type: 'columnrange',
+                zoomType: 'xy'
             },
         
             legend: {
@@ -96,7 +98,7 @@ class BarDiagramBis extends Component {
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: 'Chiffre'
+                    text: "Chiffre d\'afffaire en €"
                 }
             },
             
@@ -104,11 +106,11 @@ class BarDiagramBis extends Component {
                 valueDecimals: 2,
                 valueSuffix: '€',
                 formatter: function () {
-                    console.log(this.point)
+                    //console.log(this.point)
                     return "<b>Client : </b>" + formatName[this.x][0] + " " + formatName[this.x][1] + " | " + formatName[this.x][2] + "<br>"+
-                    "<b>Chiffre sur le mois : </b>" + roundOf(parseFloat(this.point.high-this.point.low),2) + "€<br>" +
+                    "<b>Chiffre d'affaire sur le mois pour la catégorie "+categ+" : </b>" + roundOf(parseFloat(this.point.high-this.point.low),2) + "€<br>" +
                     "<b>Date : </b>" + this.point.name + "<br>" +
-                    "<b>Total chiffre : </b>" + roundOf(formatName[this.x][3],2) + "€"
+                    "<b>Total chiffre d'affaire pour la catégorie "+categ+" : </b>" + roundOf(formatName[this.x][3],2) + "€"
                 }
             },
         

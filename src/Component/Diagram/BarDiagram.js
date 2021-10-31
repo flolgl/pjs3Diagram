@@ -30,6 +30,8 @@ class BarDiagramBis extends Component {
 			return moisNames[obj.time] +  " " + obj.y;
 		})
 
+
+        console.log(this.props.data);
         let formatName = [];
         formatName = this.props.data.map(obj => {
             //console.log("hre")
@@ -69,15 +71,6 @@ class BarDiagramBis extends Component {
                 type: 'column',
                 name: this.props.title,
                 data: formatData,
-                dataGrouping: {
-                    units: [[
-                        'week', // unit name
-                        [1] // allowed multiples
-                    ], [
-                        'month',
-                        [1, 2, 3, 4, 6]
-                    ]]
-                }
             }]
         });
 

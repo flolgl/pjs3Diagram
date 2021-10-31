@@ -23,7 +23,7 @@ export default function NavBar(){
                     </NavDropdown>
                     <Nav.Link href="/getTicketMoyenPerMonth">Prix mensuel moyen du ticket</Nav.Link>
                     <Nav.Link href="/getTicketMoyenClients">Prix du ticket moyen par client</Nav.Link>
-                    <NavDropdown title="Dépenses mensuelles des clients achetant dans une catégorie" id="basic-nav-dropdown">
+                    <NavDropdown title="Clients achetant dans une catégorie et leurs dépenses mensuelles associées" id="basic-nav-dropdown">
                         <NavDropdown.Item href="/getClientsAndDepensesByCateg?categ=Vegan">Vegan</NavDropdown.Item>
                         <NavDropdown.Item href="/getClientsAndDepensesByCateg?categ=Bio">Bio</NavDropdown.Item>
                         <NavDropdown.Item href="/getClientsAndDepensesByCateg?categ=Halal">Halal</NavDropdown.Item>
