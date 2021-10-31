@@ -39,7 +39,7 @@ class TicketMoyenMois extends Component{
     render() {
         return (
             <div>
-                <BarDiagram data={this.state.data} title="Prix mensuel moyen du ticket "/>
+                <BarDiagram data={this.state.data} addLine={true} title="Prix mensuel moyen du ticket "/>
             </div>
         ); 
     }

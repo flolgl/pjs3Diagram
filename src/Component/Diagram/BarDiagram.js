@@ -21,6 +21,8 @@ class BarDiagramBis extends Component {
 			return [obj['chiffre']];
 		})
 
+
+
         if (this.props.sortData)
             formatData.sort((a,b) => a - b)
 
@@ -38,6 +40,22 @@ class BarDiagramBis extends Component {
 
 			return obj.nom + " " + obj.prenom + " | " + obj.codecli;
 		})
+
+        let dBis = {
+            type: 'line',
+            name: this.props.title,
+            data: formatData,
+        };
+
+        let d = {
+            type: 'column',
+            name: this.props.title,
+            data: formatData,
+        }
+        let donnees = [d];
+        if (this.props.addLine)
+            donnees = [d, dBis]
+        
 
 
         Highcharts.chart('container', {
@@ -67,11 +85,7 @@ class BarDiagramBis extends Component {
             },
             
     
-            series: [{
-                type: 'column',
-                name: this.props.title,
-                data: formatData,
-            }]
+            series: donnees
         });
 
 	}

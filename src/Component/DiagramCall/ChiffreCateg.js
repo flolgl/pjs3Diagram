@@ -55,7 +55,7 @@ class ChiffreCateg extends Component{
         //console.log(this.getCateg())
         return (
             <div>
-                <BarDiagram data={this.state.data} title={"Chiffre mensuel de la catégorie " + this.getCateg()}/>
+                <BarDiagram data={this.state.data} title={"Chiffre mensuel de la catégorie " + this.getCateg()} addLine={true}/>
             </div>
         ); 
     }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import BarDiagram from '../Diagram/BarDiagram.js';
-import ChartHighstock from "../Diagram/LineDiagram.js"
 
 class TicketMoyenClients extends Component{
     constructor() {

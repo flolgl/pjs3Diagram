@@ -2,9 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
-import HighchartsReact from 'highcharts-react-official';
 import HC_more from 'highcharts/highcharts-more';
-import { createPool } from 'mysql';
 HC_more(Highcharts);
 
 class BarDiagramBis extends Component {
@@ -58,10 +56,6 @@ class BarDiagramBis extends Component {
         //if (this.props.sortData)
             //formatData.sort((a,b) => a - b)
 
-		let formatMonth = [];
-		formatMonth = this.props.data.map(obj => {
-			return moisNames[obj.time] +  " " + obj.y;
-		})
 
 
 
@@ -98,7 +92,7 @@ class BarDiagramBis extends Component {
                 allowDecimals: false,
                 min: 0,
                 title: {
-                    text: "Chiffre d\'afffaire en €"
+                    text: "Chiffre d'afffaire en €"
                 }
             },
             

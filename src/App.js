@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import ChiffreMois from "./Component/DiagramCall/ChiffreMois.js"
 import ChiffreCateg from "./Component/DiagramCall/ChiffreCateg.js"
@@ -8,7 +7,7 @@ import TicketMoyenClients from "./Component/DiagramCall/TicketMoyenClients"
 import ClientsNDepByCat from "./Component/DiagramCall/clientsNDepByCat"
 import NavBar from './Component/NavBar';
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom"
-import Accueil from './Page/Accueil';
+import Footer from './Component/Footer';
 
 
 class App extends Component {
@@ -46,6 +45,7 @@ state = {
           <Route path="/getTicketMoyenClients" component={TicketMoyenClients}/>
           <Route path="/getClientsAndDepensesByCateg" component={ClientsNDepByCat}/>
         </Switch>
+        <Footer/>
       </Router>
     );
   }
