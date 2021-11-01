@@ -8,6 +8,8 @@ import ClientsNDepByCat from "./Component/DiagramCall/clientsNDepByCat"
 import NavBar from './Component/NavBar';
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom"
 import Footer from './Component/Footer';
+import ReactDOM from 'react-dom';
+
 
 
 class App extends Component {
@@ -16,6 +18,7 @@ state = {
   };
 
   componentDidMount() {
+    document.title = "Mission 2 PJS3"
     this.callBackendAPI()
       .then(res => this.setState({ data: res.express }))
       .catch(err => console.log(err));
