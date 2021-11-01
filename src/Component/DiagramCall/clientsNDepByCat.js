@@ -57,7 +57,7 @@ class ChiffreCateg extends Component{
     }
 
     componentDidMount() {
-        fetch('/getClientsAndDepensesByCateg?categ='+this.getCateg())
+        fetch('/api/getClientsAndDepensesByCateg?categ='+this.getCateg())
             .then(res => res.json())
             .then(json => this.groupClient(json))
 

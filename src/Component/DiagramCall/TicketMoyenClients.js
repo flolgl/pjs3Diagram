@@ -19,7 +19,7 @@ class TicketMoyenClients extends Component{
     }
      
     componentDidMount() {
-        fetch('/getTicketMoyenClients')
+        fetch('/api/getTicketMoyenClients')
             .then(res => res.json())
 
             .then(json =>{

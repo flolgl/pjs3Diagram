@@ -20,9 +20,8 @@ class ChiffreMois extends Component{
         });
         return tab;
     }
-     
     componentDidMount() {
-        fetch('/getChiffrePerMonth')
+        fetch('/api/getChiffrePerMonth')
             .then(res => res.json())
             .then(json => this.updateWithMonth(json))
 
@@ -41,6 +40,10 @@ class ChiffreMois extends Component{
         return (
             <div>
                 <ChartHighstock data={this.state.data} title="Chiffre d'affaire mensuel" addLine={true}/>
+                <p style={{backgroundColor: "#e0e0e0", padding: 0.5 + "em"}} class="highcharts-description">
+                    Ce diagramme permet de visualiser l'évolution du chiffre d'affaire mensuel. Le plus gros chiffre d'affaire en atteint pour le mois de Juillet.
+                    Enfin, nous observons la plus importante augmentation du chiffre d'affaire mensuel entre Juin et Juillet. En effet, le chiffre d'affaire a été multiplié par 2.79.
+                </p>
                 {/* <BarDiagram data={this.state.data} title="Chiffre d'affaire mensuel"/> */}
             </div>
         ); 

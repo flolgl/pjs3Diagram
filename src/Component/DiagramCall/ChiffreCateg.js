@@ -30,7 +30,7 @@ class ChiffreCateg extends Component{
     }
 
     componentDidMount() {
-        fetch('/getChiffreCateg?categ='+this.getCateg())
+        fetch('/api/getChiffreCateg?categ='+this.getCateg())
             .then(res => res.json())
             //.then(json => this.updateWithMonth(json))
 

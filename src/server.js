@@ -8,6 +8,7 @@ const connection = mysql.createConnection({
   user: "root",
   password: "",
   database: "pjs3",
+  port:58000
 });
 connection.connect();
 
@@ -21,23 +22,11 @@ app.get('/express_backend', (req, res) => { //Line 9
 }); //Line 11
 
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.set('Content-Type', 'text/html');
   res.send('Hello world !!');
 });
 
-app.get('/getWatchesList', (req, res) => {
-  // SELECT DISTINCT MONTH(DateTicket) FROM `ticket`
-  connection.query('SELECT * FROM categorie', function(err, rows, fields) {
-    if (!err){
-      res.json(rows);
-      console.log(res.json)
-    }
-    else
-      console.log('Query erreur.');
-    
-  });
-});
 
 
 
@@ -54,7 +43,7 @@ function isSqlSafe(query){
 }
 
 //
-app.get('/getChiffrePerMonth', (req, res) => {
+app.get('/api/getChiffrePerMonth', (req, res) => {
   connection.query('SELECT MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y, SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0))) as chiffre FROM detailticket, ticket WHERE ticket.NoTicket = detailticket.NoTicket GROUP BY MONTH(ticket.DateTicket), YEAR(ticket.DateTicket)',
   function(err, rows, fields) {
     if (!err) {
@@ -77,7 +66,7 @@ FROM detailticket, ticket
 WHERE ticket.NoTicket = detailticket.NoTicket 
 GROUP BY(MONTH(ticket.DateTicket))
 */
-app.get('/getTicketMoyenPerMonth', (req, res) => {
+app.get('/api/getTicketMoyenPerMonth', (req, res) => {
   connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(DISTINCT ticket.NoTicket) as chiffre, MONTH(ticket.DateTicket) as time, YEAR(ticket.DateTicket) as y FROM detailticket, ticket WHERE ticket.NoTicket = detailticket.NoTicket GROUP BY MONTH(ticket.DateTicket), YEAR(ticket.DateTicket)',
   function(err, rows, fields) {
     if (!err) {
@@ -112,7 +101,7 @@ AND detailticket.RefProd = produit.RefProd
 AND LOWER(produit.NomProd) LIKE "%bio%" 
 GROUP BY(MONTH(ticket.DateTicket))
 */
-app.get('/getChiffreCateg', (req, res) => {
+app.get('/api/getChiffreCateg', (req, res) => {
   //const categorie = req.params.categorie
   const categorie = req.query.categ != null ? req.query.categ : "bio";
   if (!isSqlSafe(categorie))
@@ -142,7 +131,7 @@ WHERE ticket.NoTicket = detailticket.NoTicket
 AND client.codecli = ticket.codecli
 GROUP BY(ticket.codecli)
 */
-app.get('/getTicketMoyenClients', (req, res) => {
+app.get('/api/getTicketMoyenClients', (req, res) => {
 
   connection.query('SELECT SUM(detailticket.PrixUnit*detailticket.Qte*(1-COALESCE(detailticket.Remise_,0)))/COUNT(ticket.NoTicket) as chiffre, client.codecli, client.nom, client.prenom FROM detailticket, ticket, client WHERE ticket.NoTicket = detailticket.NoTicket  AND client.codecli = ticket.codecli GROUP BY(ticket.codecli) ORDER BY client.nom',
     function(err, rows, fields) {
@@ -182,7 +171,7 @@ GROUP BY MONTH(ticket.DateTicket), YEAR(ticket.DateTicket), ticket.codecli
 ORDER BY client.codecli, MONTH(ticket.DateTicket) ASC 
 */
 
-app.get('/getClientsAndDepensesByCateg', (req, res) => {
+app.get('/api/getClientsAndDepensesByCateg', (req, res) => {
 
 
   const categorie = req.query.categ != null ? req.query.categ : "bio";
